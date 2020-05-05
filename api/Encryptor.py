@@ -23,7 +23,7 @@ class Encryptor:
         enc = self.encrypt(plaintext, self.key)
         with open(file_name + ".enc", 'wb') as fo:
             fo.write(enc)
-        os.remove(file_name)
+        # os.remove(file_name)
 
     def decrypt(self, ciphertext, key):
         iv = ciphertext[:AES.block_size]
@@ -37,7 +37,7 @@ class Encryptor:
         dec = self.decrypt(ciphertext, self.key)
         with open(file_name[:-4], 'wb') as fo:
             fo.write(dec)
-        os.remove(file_name)
+        # os.remove(file_name)
 
 
 

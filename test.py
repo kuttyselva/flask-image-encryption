@@ -1,39 +1,35 @@
 import numpy as np
 import scipy.misc
 import cv2
-# import pylab
+import pickle 
 from matplotlib import pylab
 from pylab import *
 from datetime import datetime as dt
 from matplotlib import pyplot as plt
 from PIL import Image
 import pywt
+import bz2
+from shutil import copyfileobj
 
 
-def show(data):
-    pylab.jet()
-    pylab.imshow(data)
-    pylab.colorbar()
-    pylab.show()
-    pylab.clf()
+# imgObj = Image.open("favicon.png")
+# img = np.array(imgObj)
+# print(img.dtype)
+# # pywt
+# s = dt.now()
+# res_pywt = pywt.dwt2(img, "haar")
+# print("pywt took:", dt.now() - s)
+# print(res_pywt)
+# file_pi = open('filename_pi.obj', 'wb')
+# pickle.dump(res_pywt, file_pi)
+
+file_pi2 = open('filename_pi.obj', 'rb') 
+object_pi2 = pickle.load(file_pi2)
 
 
-imgObj = Image.open("picture_out.png")
-img = np.array(imgObj)
-print(img.dtype)
-# pywt
-s = dt.now()
-res_pywt = pywt.dwt2(img, "haar")
-print("pywt took:", dt.now() - s)
-# show(res_pywt[0])
-img = Image.fromarray(res_pywt[0], 'RGBA')
-img.save('my.png')
-img.show()
-
-response = pywt.idwt2(res_pywt, "haar")
+response = pywt.idwt2(object_pi2, "haar")
 response = response.astype('uint8')
-# print(response)
-
+print(response)
 res = Image.fromarray(response, "RGBA")
 res.save('mys.png')
 res.show()

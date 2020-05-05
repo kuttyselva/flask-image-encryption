@@ -1,37 +1,16 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-import pywt
-import pywt.data
+from cryptosteganography import CryptoSteganography
 
+message = None
+with open('filename_pi.obj.enc', "rb") as f:
+    message = f.read()
 
-# Load image
-# imgObj = Image.open("picture_out.png")
-# original = np.array(imgObj)
-original = pywt.data.camera()
+crypto_steganography = CryptoSteganography('My secret password key')
 
-# Wavelet transform of image, and plot approximation and details
-titles = ['Approximation', ' Horizontal detail',
-          'Vertical detail', 'Diagonal detail']
-coeffs2 = pywt.dwt2(original, 'bior1.3')
-LL, (LH, HL, HH) = coeffs2
-fig = plt.figure(figsize=(12, 3))
-for i, a in enumerate([LL, LH, HL, HH]):
-    ax = fig.add_subplot(1, 4, i + 1)
-    ax.imshow(a, interpolation="nearest", cmap=plt.cm.gray)
-    ax.set_title(titles[i], fontsize=10)
-    ax.set_xticks([])
-    ax.set_yticks([])
+crypto_steganography.hide('pip.jpg', 'output_image_file.png', message)
 
-fig.tight_layout()
-plt.show()
+crypto_steganography = CryptoSteganography('My secret password key')
+decrypted_bin = crypto_steganography.retrieve('output_image_file.png')
 
-res = pywt.idwt2(coeffs2,'bior1.3')
-res = res.astype('uint8')
-
-new_im = Image.fromarray(res,'RGBA')
-# new_im.save("numpy_altered_sample2.png")
-new_im.show()
-# img = Image.fromarray(response, 'RGB')
-# img.save('mys.png')
-# img.show()
+# Save the data to a new file
+with open('decrypted_sample.mp3', 'wb') as f:
+    f.write(secret_bin)

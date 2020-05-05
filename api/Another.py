@@ -12,15 +12,25 @@ import os.path
 from os import listdir
 from os.path import isfile, join
 import time
-
+import numpy as np
+import pickle 
+from PIL import Image
+import pywt
 class Another(Resource):
     def post(self):
         file = request.files['image'].read()
         filename=str(time.time_ns())+'.png'
         with open(filename, 'wb') as f:
-            f.write(file)  
-        enc.encrypt_file(filename)
-        with open(filename+'.enc', 'rb') as f:
+            f.write(file)
+
+        imgObj = Image.open(filename)
+        img = np.array(imgObj)
+        res_pywt = pywt.dwt2(img, "haar")
+        file_pi = open('filename_pi.obj', 'wb')
+        pickle.dump(res_pywt, file_pi)
+
+        enc.encrypt_file('filename_pi.obj')
+        with open('filename_pi.obj'+'.enc', 'rb') as f:
             encrypted_image= f.read()
         passcode = request.form['passcode']
         crypto_steganography = CryptoSteganography(passcode)
